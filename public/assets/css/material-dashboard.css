@@ -5097,6 +5097,9 @@ footer .btn {
   .form-group.is-focused .input-search {
     width: 500px;
   }
+  .form-group.is-empty .input-search {
+    transition: all 0.3s;
+  }
 }
 @media (min-width: 992px) {
   .table-full-width {
