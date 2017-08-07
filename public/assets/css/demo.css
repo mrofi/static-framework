@@ -49,10 +49,6 @@
     margin-top: 0;
 }
 
-.fixed-section ul {
-    max-height: calc(100vh - 300px);
-    overflow-y: auto;
-}
 .fixed-section ul li{
     list-style: none;
 }
@@ -87,5 +83,10 @@
 
     .fixed-section.affix {
         margin-bottom: 100px;
+    }
+
+    .fixed-section ul {
+        max-height: calc(100vh - 300px);
+        overflow-y: auto;
     }
 }
