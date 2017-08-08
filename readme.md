@@ -1,7 +1,7 @@
 ## How to
 
 ```
-  git clone 
+  git clone git@github.com:mrofi/static-framework.git
   cd static-framework
   php -S localhost:8000 -t public
 ```
@@ -17,3 +17,9 @@ You can directly access it by it's name (without .php)
 You have a dashboard.php file in folder views,
 
 then access from your browser with url : http://localhost:8000/dashboard
+
+## License
+MIT
+
+## Any Question?
+Please, [Open Issue here](https://github.com/mrofi/static-framework/issues) 
