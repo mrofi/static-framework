@@ -1,8 +1,7 @@
 ## Requirements
 
-PHP 7.0 or more
-
-Web Server
+- PHP 7.0 or more
+- Web Server
 
 ## How to
 
