@@ -71,7 +71,7 @@ return function ($viewFolder, $routes, array $appDatas = []) {
         return require StaticFramework::$viewFolder.'/404.php';
     }
 
-    StaticFramework::$appDatas['routeName'] = str_replace('/', '.', $fullUri);
+    StaticFramework::$appDatas['routeName'] = rtrim(str_replace('/', '.', $fullUri), '.');
 
     if (array_key_exists($fullUri, $routes)) {
         $viewName = $routes[$fullUri];
