@@ -36,7 +36,13 @@ $routes = [
      */
 ];
 
+$reservedUrls = [
+
+    'layout',
+
+];
+
 
 // Load Static Framework File
 $bootstrap = require __DIR__.'/../static-framework.php';
-return $bootstrap($viewFolder, $routes, $appDatas);
+return $bootstrap($viewFolder, $routes, $appDatas, $reservedUrls);

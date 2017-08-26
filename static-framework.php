@@ -30,8 +30,20 @@ class StaticFramework
     }
 }
 
-return function ($viewFolder, $routes, array $appDatas = []) {
+function view($viewName, array $datas = []) {
+    $appDatas = array_merge(StaticFramework::$appDatas, $datas);
+    StaticFramework::$appDatas = $appDatas;
 
+    $viewFile = StaticFramework::$viewFolder.'/'.$viewName.'.php';
+    extract($appDatas);
+    if (file_exists($viewFile)) {
+        return require $viewFile;
+    }
+
+    return require StaticFramework::$viewFolder.'/404.php';
+}
+
+return function ($viewFolder, $routes, array $appDatas = [], array $reservedUrls = []) {
 
     $uri = explode('/',
                 urldecode(
@@ -50,25 +62,16 @@ return function ($viewFolder, $routes, array $appDatas = []) {
                 ]);
     $framework = new StaticFramework($viewFolder, $routes, $appDatas);
 
+    if (in_array($fullUri, $reservedUrls)) {
+        return view('404');
+    }
+
     $func = $uri[0] ?: '/';
 
     if (function_exists($func)) {
 
         array_shift($uri);
         return call_user_func_array($func, $uri);
-    }
-
-    function view($viewName, array $datas = []) {
-        $appDatas = array_merge(StaticFramework::$appDatas, $datas);
-        StaticFramework::$appDatas = $appDatas;
-
-        $viewFile = StaticFramework::$viewFolder.'/'.$viewName.'.php';
-        extract($appDatas);
-        if (file_exists($viewFile)) {
-            return require $viewFile;
-        }
-
-        return require StaticFramework::$viewFolder.'/404.php';
     }
 
     StaticFramework::$appDatas['routeName'] = rtrim(str_replace('/', '.', $fullUri), '.');
