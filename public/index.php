@@ -39,6 +39,7 @@ $routes = [
 $reservedUrls = [
 
     'layout',
+    'sidebar',
 
 ];
 
