@@ -32,9 +32,17 @@ class StaticFramework
         foreach ($translations as $key => $value) {
             if (is_array($value)) {
                 foreach ($value as $subKey => $subValue) {
-                    $search = 'trans['.$key.'.'.$subKey.']';
-                    $replacement = $subValue;
-                    StaticFramework::$cachedTranslations[$search] = $replacement;
+                    if (is_array($subValue)) {
+                        foreach ($subValue as $subKey2 => $subValue2) {
+                            $search = 'trans['.$key.'.'.$subKey.'.'.$subKey2.']';
+                            $replacement = $subValue2;
+                            StaticFramework::$cachedTranslations[$search] = $replacement;
+                        }
+                    } else {
+                        $search = 'trans['.$key.'.'.$subKey.']';
+                        $replacement = $subValue;
+                        StaticFramework::$cachedTranslations[$search] = $replacement;
+                    }
                 }
             } else {
                 $search = 'trans['.$key.']';
