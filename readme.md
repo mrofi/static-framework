@@ -26,5 +26,12 @@ then access from your browser with url : http://localhost:8000/dashboard
 ## License
 MIT
 
+## Changelog
+- Translation
+- Reserved Uris
+- Passing Data to View
+- Router
+- View
+
 ## Any Question?
 Please, [Open Issue here](https://github.com/mrofi/static-framework/issues) 
