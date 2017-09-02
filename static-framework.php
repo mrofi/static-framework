@@ -21,13 +21,35 @@ class StaticFramework
     public static $viewFolder = __DIR__.'/../views';
     public static $routes = [];
     public static $appDatas = [];
+    public static $cachedTranslations = [];
 
-    public function __construct($viewFolder, $routes, array $appDatas = [])
+    public function __construct($viewFolder, $routes, array $appDatas = [], array $translations = [])
     {
         static::$viewFolder = $viewFolder;
         static::$routes = $routes;
         static::$appDatas = $appDatas;
+
+        foreach ($translations as $key => $value) {
+            if (is_array($value)) {
+                foreach ($value as $subKey => $subValue) {
+                    $search = 'trans['.$key.'.'.$subKey.']';
+                    $replacement = $subValue;
+                    StaticFramework::$cachedTranslations[$search] = $replacement;
+                }
+            } else {
+                $search = 'trans['.$key.']';
+                $replacement = $value;
+                StaticFramework::$cachedTranslations[$search] = $replacement;
+            }
+        }
     }
+}
+
+function translate($buffer) {
+    foreach (StaticFramework::$cachedTranslations as $search => $replacement) {
+        $buffer = str_replace($search, $replacement, $buffer);
+    }
+    return $buffer;
 }
 
 function view($viewName, array $datas = []) {
@@ -37,13 +59,20 @@ function view($viewName, array $datas = []) {
     $viewFile = StaticFramework::$viewFolder.'/'.$viewName.'.php';
     extract($appDatas);
     if (file_exists($viewFile)) {
-        return require $viewFile;
+
+        ob_start("translate");
+
+        require $viewFile;
+
+        ob_end_flush();
+
+        return;
     }
 
     return require StaticFramework::$viewFolder.'/404.php';
 }
 
-return function ($viewFolder, $routes, array $appDatas = [], array $reservedUrls = []) {
+return function ($viewFolder, $routes, array $appDatas = [], array $reservedUrls = [], array $translations = []) {
 
     $uri = explode('/',
                 urldecode(
@@ -60,7 +89,7 @@ return function ($viewFolder, $routes, array $appDatas = [], array $reservedUrls
                     'uri' => $uri,
                     'fullUri' => $fullUri,
                 ]);
-    $framework = new StaticFramework($viewFolder, $routes, $appDatas);
+    $framework = new StaticFramework($viewFolder, $routes, $appDatas, $translations);
 
     if (in_array($fullUri, $reservedUrls)) {
         return view('404');
