@@ -80,6 +80,9 @@ return function ($viewFolder, $routes, array $appDatas = [], array $reservedUrls
             );
     array_shift($uri);
     $fullUri = implode('/', $uri);
+    if (empty($fullUri)) {
+        $fullUri = '/';
+    }
     $appDatas = array_merge($appDatas, [
                     'routeName' => '404',
                     'uri' => $uri,
